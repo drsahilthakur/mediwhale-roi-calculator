@@ -252,6 +252,20 @@
   .text-input::placeholder{color:var(--muted);font-weight:500}
   .text-input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 
+  .panel-hint{margin:0 0 6px;font-size:11.5px;color:var(--muted);line-height:1.4}
+  .panel-hint b{color:var(--accent);font-weight:700}
+  .num-edit{display:inline-flex;align-items:baseline;gap:1px;font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+  .num-edit .ne-sym{font-size:12px}
+  .num-edit .ne-unit{font-size:11.5px;font-weight:600;margin-left:1px}
+  .num-edit input{
+    font:inherit;font-weight:700;color:var(--accent);text-align:right;
+    background:transparent;border:none;
+    border-bottom:1px dashed color-mix(in srgb,var(--accent) 50%,transparent);
+    padding:0 1px 1px;margin:0;border-radius:3px;min-width:2.5ch;
+  }
+  .num-edit input:hover{background:var(--accent-softer);border-bottom-color:var(--accent)}
+  .num-edit input:focus{outline:none;background:var(--accent-softer);border-bottom-style:solid;border-bottom-color:var(--accent)}
+
   input[type="range"]{
     -webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;
     background:var(--track);outline:none;margin:10px 0 2px;cursor:pointer;
@@ -481,6 +495,7 @@
         <h2>Your clinic</h2>
         <button type="button" class="ghost-btn" id="resetBtn">Reset</button>
       </div>
+      <p class="panel-hint">Use the toggles and sliders — or <b>tap any blue value</b> to type an exact number.</p>
 
       <section class="group">
         <h3>Setup</h3>
@@ -829,6 +844,92 @@
     if (lastMetrics) renderPrintSummary(lastMetrics); // cheap update — no chart rebuild while typing
   });
 
+  /* ---------------- editable exact-value number inputs ---------------- */
+  var NUM_FIELDS = {
+    camera:{slider:"sl-camera",cur:true,unit:""},
+    rent:  {slider:"sl-rent",  cur:true,unit:"/mo"},
+    aifee: {slider:"sl-aifee", cur:true,unit:"/scan"},
+    salary:{slider:"sl-salary",cur:true,unit:"/mo"},
+    hr:    {slider:"sl-hr",    cur:false,unit:"%"},
+    spec:  {slider:"sl-spec",  cur:true,unit:"/review"},
+    price: {slider:"sl-price", cur:true,unit:"/scan"},
+    volume:{slider:"sl-volume",cur:false,unit:"/mo"}
+  };
+  var numInputs = {};
+
+  function neDisplay(key){
+    var v = NUM_FIELDS[key].cur ? conv(state[key]) : state[key];
+    return Math.round(v);
+  }
+  function neFormat(key){
+    return new Intl.NumberFormat("en",{maximumFractionDigits:0}).format(neDisplay(key));
+  }
+  function neAutosize(input){
+    input.style.width = Math.max(2.5, (input.value.length || 1) + 0.6) + "ch";
+  }
+  function neClampUSD(key, usd){
+    var sl = document.getElementById(NUM_FIELDS[key].slider);
+    return Math.min(+sl.max, Math.max(+sl.min, usd));
+  }
+  function neCommit(key, str){
+    var cfg = NUM_FIELDS[key];
+    var parsed = parseFloat(String(str).replace(/[^0-9.\-]/g, ""));
+    if (!isFinite(parsed)) return; // empty / invalid: hold current value
+    var usd = cfg.cur ? parsed / rates[state.cur] : parsed;
+    state[key] = neClampUSD(key, usd);
+    var sl = document.getElementById(cfg.slider);
+    if (state[key] >= +sl.min && state[key] <= +sl.max) sl.value = state[key];
+    render();
+  }
+  function neRefresh(key, force){
+    var ni = numInputs[key];
+    if (!ni) return;
+    ni.sym.textContent = NUM_FIELDS[key].cur ? SYMS[state.cur] : "";
+    ni.unit.textContent = NUM_FIELDS[key].unit;
+    if (force || document.activeElement !== ni.input){
+      ni.input.value = neFormat(key);
+      neAutosize(ni.input);
+    }
+  }
+  function updateNumberInputs(){
+    Object.keys(NUM_FIELDS).forEach(function(key){ neRefresh(key, false); });
+  }
+  function buildNumberInputs(){
+    Object.keys(NUM_FIELDS).forEach(function(key){
+      var out = document.getElementById("out-" + key);
+      if (!out) return;
+      var cfg = NUM_FIELDS[key];
+      var wrap = document.createElement("span");
+      wrap.className = "num-edit";
+      var sym = document.createElement("span"); sym.className = "ne-sym";
+      var input = document.createElement("input");
+      input.type = "text"; input.inputMode = "decimal"; input.autocomplete = "off";
+      input.id = "num-" + key; input.title = "Type an exact value (↑/↓ to nudge)";
+      if (document.getElementById("lbl-" + key)) input.setAttribute("aria-labelledby", "lbl-" + key);
+      var unit = document.createElement("span"); unit.className = "ne-unit";
+      wrap.appendChild(sym); wrap.appendChild(input); wrap.appendChild(unit);
+      out.parentNode.replaceChild(wrap, out);
+      numInputs[key] = { input: input, sym: sym, unit: unit };
+
+      input.addEventListener("focus", function(){
+        input.value = String(neDisplay(key)); neAutosize(input); input.select();
+      });
+      input.addEventListener("input", function(){ neCommit(key, input.value); neAutosize(input); });
+      input.addEventListener("blur", function(){ neRefresh(key, true); });
+      input.addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){ input.blur(); return; }
+        if (ev.key === "ArrowUp" || ev.key === "ArrowDown"){
+          var sl = document.getElementById(cfg.slider);
+          var step = (+sl.step || 1);
+          var dispStep = cfg.cur ? Math.max(1, Math.round(step * rates[state.cur])) : step;
+          var cur = neDisplay(key);
+          input.value = String((ev.key === "ArrowUp") ? cur + dispStep : cur - dispStep);
+          neCommit(key, input.value); neAutosize(input); ev.preventDefault();
+        }
+      });
+    });
+  }
+
   function syncControls(){
     Object.keys(CHIP_DEFS).forEach(function(key){
       var def = CHIP_DEFS[key];
@@ -871,15 +972,8 @@
     }
     // outputs & range end labels
     document.getElementById("out-horizon").textContent  = state.horizon + " months";
-    document.getElementById("out-camera").textContent   = state.camera === 0 ? "Already owned" : money(state.camera, 0);
-    document.getElementById("out-rent").textContent     = money(state.rent, 0) + " / mo";
     document.getElementById("out-software").textContent = state.software === 0 ? "None" : money(state.software, 0) + " / yr";
-    document.getElementById("out-aifee").textContent    = money(state.aifee) + " / scan";
-    document.getElementById("out-salary").textContent   = money(state.salary, 0) + " / mo";
-    document.getElementById("out-hr").textContent       = state.hr + "% flagged";
-    document.getElementById("out-spec").textContent     = money(state.spec) + " / review";
-    document.getElementById("out-price").textContent    = money(state.price) + " / scan";
-    document.getElementById("out-volume").textContent   = num(state.volume) + " / mo";
+    updateNumberInputs();
     document.getElementById("min-camera").textContent = money(0, 0);
     document.getElementById("max-camera").textContent = moneyCompact(30000);
     document.getElementById("min-rent").textContent   = moneyCompact(100);
@@ -1479,6 +1573,7 @@
 
   buildChips();
   buildSliders();
+  buildNumberInputs();
   render();
 })();
 </script>
