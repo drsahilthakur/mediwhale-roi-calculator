@@ -1,0 +1,14 @@
+# Netlify configuration for a static single-file site.
+# There is no build step — the site is plain HTML served from the repo root.
+
+[build]
+  publish = "."
+  command = ""
+
+# Long-cache the calculator but always revalidate the HTML so updates ship instantly.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
