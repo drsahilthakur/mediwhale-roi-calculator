@@ -175,6 +175,14 @@
   }
   .export-btn:hover{background:var(--accent-strong)}
   .export-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .guide-link{
+    display:inline-flex;align-items:center;gap:7px;
+    font:inherit;font-size:13.5px;font-weight:650;color:var(--accent);
+    background:var(--surface);border:1px solid var(--hairline);border-radius:10px;
+    padding:8px 14px;cursor:pointer;text-decoration:none;
+  }
+  .guide-link:hover{border-color:var(--accent);background:var(--accent-softer)}
+  .guide-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
   /* ---------- layout ---------- */
   .layout{display:grid;grid-template-columns:352px minmax(0,1fr);gap:22px;align-items:start}
@@ -455,6 +463,10 @@
       <p>How many retinal scans does your clinic need each month to pay back the camera and AI software — and what happens after break-even?</p>
     </div>
     <div class="mast-actions">
+      <a class="guide-link" href="guide.html" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><circle cx="7.5" cy="7.5" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.9 5.8a1.6 1.6 0 1 1 2.2 1.5c-.5.3-.6.5-.6 1v.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="7.5" cy="10.7" r="0.75" fill="currentColor"/></svg>
+        How to use it
+      </a>
       <button type="button" class="export-btn" id="export-btn" title="Opens your browser's print dialog — choose 'Save as PDF'">
         <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v8M4.5 6.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2.5h11V11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Export PDF
