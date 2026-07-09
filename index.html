@@ -1,5 +1,21 @@
 <meta charset="utf-8">
-<title>Mediwhale ROI Calculator</title>
+<title>Mediwhale ROI Calculator — scans per month to pay back your camera & AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Free tool for clinics: estimate how many retinal scans a month you need to pay back a fundus camera and Mediwhale AI screening software — with break-even, profit, payback and revenue projections in your currency.">
+<meta name="theme-color" content="#4457a7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234457a7'/%3E%3Cg fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M11 22l4-12'/%3E%3Cpath d='M17 22l4-12'/%3E%3Cpath d='M15.5 15.5l3-5.5'/%3E%3C/g%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mediwhale">
+<meta property="og:title" content="Mediwhale ROI Calculator">
+<meta property="og:description" content="How many retinal scans a month pay back your camera & AI? Estimate break-even, profit and payback for your clinic.">
+<meta property="og:url" content="https://mediwhale.netlify.app/">
+<meta property="og:image" content="https://mediwhale.netlify.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mediwhale ROI Calculator">
+<meta name="twitter:description" content="How many retinal scans a month pay back your camera & AI? Estimate break-even, profit and payback for your clinic.">
+<meta name="twitter:image" content="https://mediwhale.netlify.app/og-image.png">
 <style>
   :root{
     --bg:#f2f6fb;
@@ -183,6 +199,58 @@
   }
   .guide-link:hover{border-color:var(--accent);background:var(--accent-softer)}
   .guide-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .link-btn{
+    display:inline-flex;align-items:center;gap:7px;
+    font:inherit;font-size:13.5px;font-weight:650;color:var(--accent);
+    background:var(--surface);border:1px solid var(--hairline);border-radius:10px;
+    padding:8px 14px;cursor:pointer;
+  }
+  .link-btn:hover{border-color:var(--accent);background:var(--accent-softer)}
+  .link-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .link-btn.copied{color:var(--good-text);border-color:color-mix(in srgb,var(--good) 40%,var(--hairline))}
+
+  /* sub-fields that gate on a toggle */
+  .subgroup{border-left:2px solid var(--accent-soft);padding-left:12px;margin-left:2px}
+  .subgroup.off{opacity:.45}
+
+  /* compare / pin */
+  .pin-btn{
+    font:inherit;font-size:12px;font-weight:650;color:var(--accent);
+    background:var(--surface);border:1px solid var(--hairline);border-radius:8px;
+    padding:5px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+  }
+  .pin-btn:hover{border-color:var(--accent);background:var(--accent-softer)}
+  .pin-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .card.compare-card{padding:0;overflow:hidden}
+  .compare-head{display:flex;align-items:center;gap:10px;padding:14px 20px 12px}
+  .compare-head h3{margin:0;font-size:15px;font-weight:700}
+  .compare-head .ghost-btn{margin-left:auto}
+  .compare-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;border-top:1px solid var(--hairline)}
+  .compare-grid>div{padding:9px 14px;border-bottom:1px solid var(--grid);font-size:13px;font-variant-numeric:tabular-nums;text-align:right}
+  .compare-grid .ch{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:right;background:var(--surface-2)}
+  .compare-grid .rl{text-align:left;color:var(--ink-2);font-weight:600}
+  .compare-grid .ch.rl{color:var(--muted)}
+  .compare-grid .cur-col{font-weight:700;color:var(--ink)}
+  .compare-grid .delta{font-size:11px;color:var(--muted)}
+  .compare-grid .delta.pos{color:var(--good-text)} .compare-grid .delta.neg{color:var(--crit-text)}
+  .compare-digest{padding:8px 14px;font-size:11.5px;color:var(--muted);border-bottom:1px solid var(--grid);text-align:left}
+
+  /* CTA strip */
+  .card.cta{
+    display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+    border-radius:var(--radius);padding:20px 24px;color:#fff;
+    background:linear-gradient(135deg,#4457a7 0%,#2f3877 100%);
+    border:1px solid transparent;
+  }
+  .cta .cta-body h3{margin:0;font-size:17px;font-weight:730;color:#fff}
+  .cta .cta-body p{margin:3px 0 0;font-size:13.5px;color:#eaeefb;max-width:56ch}
+  .cta a.cta-btn{
+    display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+    font-size:14px;font-weight:700;color:#36418a;background:#fff;
+    border-radius:10px;padding:11px 18px;text-decoration:none;
+  }
+  .cta a.cta-btn:hover{background:#eef0fb}
+  .cta a.cta-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
 
   /* ---------- layout ---------- */
   .layout{display:grid;grid-template-columns:352px minmax(0,1fr);gap:22px;align-items:start}
@@ -444,7 +512,7 @@
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
     body{background:#fff;font-size:13px}
     .app{max-width:none;padding:0}
-    .mast-actions,.panel{display:none}
+    .mast-actions,.panel,.pin-btn,.compare-head .ghost-btn{display:none}
     .masthead{margin-bottom:14px}
     .layout{display:block}
     .results{gap:12px}
@@ -481,6 +549,10 @@
         <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><circle cx="7.5" cy="7.5" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.9 5.8a1.6 1.6 0 1 1 2.2 1.5c-.5.3-.6.5-.6 1v.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="7.5" cy="10.7" r="0.75" fill="currentColor"/></svg>
         How to use it
       </a>
+      <button type="button" class="link-btn" id="copy-btn" title="Copy a link that reopens the calculator with these exact numbers">
+        <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><path d="M6 9a2.5 2.5 0 0 0 3.5 0l2-2A2.5 2.5 0 0 0 8 3.5l-1 1M9 6a2.5 2.5 0 0 0-3.5 0l-2 2A2.5 2.5 0 0 0 7 11.5l1-1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="copy-btn-label">Copy link</span>
+      </button>
       <button type="button" class="export-btn" id="export-btn" title="Opens your browser's print dialog — choose 'Save as PDF'">
         <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v8M4.5 6.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v2.5h11V11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Export PDF
@@ -562,6 +634,20 @@
           <div class="field-note">The technician or nurse who runs the scans. Only the minutes spent scanning are charged to each test.</div>
         </div>
         <div class="field">
+          <div class="field-top"><label id="lbl-onCosts" for="sl-onCosts">Employer on-costs</label><output id="out-onCosts"></output></div>
+          <div class="chips" id="chips-onCosts" role="group" aria-labelledby="lbl-onCosts"></div>
+          <input type="range" id="sl-onCosts" min="0" max="60" step="1" aria-labelledby="lbl-onCosts">
+          <div class="range-ends"><span>0%</span><span>60%</span></div>
+          <div class="field-note">Adds benefits, employer taxes and pension on top of salary (typically 20–30%). Leave at 0% to use the bare salary.</div>
+        </div>
+        <div class="field">
+          <div class="field-top"><label id="lbl-overhead" for="sl-overhead">Clinic overhead for this service</label><output id="out-overhead"></output></div>
+          <div class="chips" id="chips-overhead" role="group" aria-labelledby="lbl-overhead"></div>
+          <input type="range" id="sl-overhead" min="0" max="10000" step="100" aria-labelledby="lbl-overhead">
+          <div class="range-ends"><span id="min-overhead"></span><span id="max-overhead"></span></div>
+          <div class="field-note">Optional monthly share of room, electricity and admin allocated to the screening service.</div>
+        </div>
+        <div class="field">
           <div class="field-top"><label id="lbl-hours">Clinic hours per day</label></div>
           <div class="chips" id="chips-hours" role="group" aria-labelledby="lbl-hours"></div>
         </div>
@@ -576,22 +662,22 @@
       </section>
 
       <section class="group">
-        <h3>Specialist review</h3>
+        <h3>High-risk patients</h3>
         <div class="field">
-          <div class="field-top"><label id="lbl-specOn">Review high-risk patients?</label></div>
-          <div class="chips" id="chips-specOn" role="group" aria-labelledby="lbl-specOn"></div>
-          <div class="field-note">Patients the AI flags as high-risk are reviewed by (or referred to) a specialist, which costs the clinic time or fees.</div>
+          <div class="field-top"><label id="lbl-hr" for="sl-hr">Expected high-risk rate</label><output id="out-hr"></output></div>
+          <div class="chips" id="chips-hr" role="group" aria-labelledby="lbl-hr"></div>
+          <input type="range" id="sl-hr" min="0" max="60" step="1" aria-labelledby="lbl-hr">
+          <div class="range-ends"><span>0%</span><span>60%</span></div>
+          <div class="field-note">Share of screened patients the AI flags as high-risk. Real-world retinal AI screening flagged ≈25%
+            (<a href="https://academic.oup.com/jamia/article/31/1/130/7320055" target="_blank" rel="noopener">Lee et al., JAMIA 2024</a>).
+            Drives the clinical-impact and downstream-value figures.</div>
         </div>
-        <div class="spec-fields" id="spec-fields">
-          <div class="field">
-            <div class="field-top"><label id="lbl-hr" for="sl-hr">Expected high-risk rate</label><output id="out-hr"></output></div>
-            <div class="chips" id="chips-hr" role="group" aria-labelledby="lbl-hr"></div>
-            <input type="range" id="sl-hr" min="0" max="60" step="1" aria-labelledby="lbl-hr">
-            <div class="range-ends"><span>0%</span><span>60%</span></div>
-            <div class="field-note">Real-world retinal AI screening flagged ≈25% of patients as high-risk
-              (<a href="https://academic.oup.com/jamia/article/31/1/130/7320055" target="_blank" rel="noopener">JAMIA 2024</a>).
-              Set your clinic's own expectation here.</div>
-          </div>
+        <div class="field">
+          <div class="field-top"><label id="lbl-specOn">Review high-risk with a specialist?</label></div>
+          <div class="chips" id="chips-specOn" role="group" aria-labelledby="lbl-specOn"></div>
+          <div class="field-note">If flagged patients are reviewed by (or referred to) a specialist, that costs the clinic time or fees.</div>
+        </div>
+        <div class="spec-fields subgroup" id="spec-fields">
           <div class="field">
             <div class="field-top"><label id="lbl-spec" for="sl-spec">Specialist cost per review</label><output id="out-spec"></output></div>
             <div class="chips" id="chips-spec" role="group" aria-labelledby="lbl-spec"></div>
@@ -609,6 +695,33 @@
           <div class="chips" id="chips-price" role="group" aria-labelledby="lbl-price"></div>
           <input type="range" id="sl-price" min="10" max="300" step="5" aria-labelledby="lbl-price">
           <div class="range-ends"><span id="min-price"></span><span id="max-price"></span></div>
+        </div>
+        <div class="field">
+          <div class="field-top"><label id="lbl-mixedPayers">Mixed payers (insurance + self-pay)?</label></div>
+          <div class="chips" id="chips-mixedPayers" role="group" aria-labelledby="lbl-mixedPayers"></div>
+          <div class="field-note">Turn on if some scans are reimbursed at a different rate from what self-pay patients are charged.</div>
+        </div>
+        <div class="payer-fields subgroup" id="payer-fields">
+          <div class="field">
+            <div class="field-top"><label id="lbl-pctReimb" for="sl-pctReimb">Share reimbursed by insurance</label><output id="out-pctReimb"></output></div>
+            <div class="chips" id="chips-pctReimb" role="group" aria-labelledby="lbl-pctReimb"></div>
+            <input type="range" id="sl-pctReimb" min="0" max="100" step="5" aria-labelledby="lbl-pctReimb">
+            <div class="range-ends"><span>0%</span><span>100%</span></div>
+            <div class="field-note">The rest are charged the self-pay price above.</div>
+          </div>
+          <div class="field">
+            <div class="field-top"><label id="lbl-reimbPrice" for="sl-reimbPrice">Reimbursed price per scan</label><output id="out-reimbPrice"></output></div>
+            <div class="chips" id="chips-reimbPrice" role="group" aria-labelledby="lbl-reimbPrice"></div>
+            <input type="range" id="sl-reimbPrice" min="0" max="300" step="5" aria-labelledby="lbl-reimbPrice">
+            <div class="range-ends"><span id="min-reimbPrice"></span><span id="max-reimbPrice"></span></div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-top"><label id="lbl-downstream" for="sl-downstream">Downstream value per high-risk patient</label><output id="out-downstream"></output></div>
+          <div class="chips" id="chips-downstream" role="group" aria-labelledby="lbl-downstream"></div>
+          <input type="range" id="sl-downstream" min="0" max="2000" step="25" aria-labelledby="lbl-downstream">
+          <div class="range-ends"><span id="min-downstream"></span><span id="max-downstream"></span></div>
+          <div class="field-note">Extra revenue a flagged patient generates downstream — specialist consult, follow-up imaging, treatment or retention. Leave at 0 to count scan fees only.</div>
         </div>
         <div class="field">
           <div class="field-top"><label id="lbl-volume" for="sl-volume">Expected patients per month</label><output id="out-volume"></output></div>
@@ -638,7 +751,20 @@
         <div class="hero-side">
           <span class="status-chip" id="hero-chip"></span>
           <span class="mini" id="hero-mini"></span>
+          <button type="button" class="pin-btn" id="pin-btn" title="Save this scenario to compare against changes you make next">
+            <svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 1.5h4l-.6 3.2 2.1 2.1H3.5l2.1-2.1L5 1.5zM7 6.8V12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="pin-btn-label">Pin to compare</span>
+          </button>
         </div>
+      </div>
+
+      <div class="card compare-card" id="compare-card" style="display:none">
+        <div class="compare-head">
+          <h3>Scenario comparison</h3>
+          <button type="button" class="ghost-btn" id="compare-clear">Clear</button>
+        </div>
+        <div class="compare-digest" id="compare-digest-a"></div>
+        <div class="compare-grid" id="compare-grid"></div>
       </div>
 
       <div class="tiles" id="tiles"></div>
@@ -690,12 +816,25 @@
         <h3>Assumptions</h3>
         <ul>
           <li>A month is counted as <strong id="note-dpm"></strong> working days (working days per week × 4.345 weeks).</li>
-          <li>Staff cost per scan = monthly salary ÷ working minutes per month × minutes per test — only scanning time is charged to the test.</li>
-          <li>Specialist review: the chosen share of screened patients is expected to be flagged high-risk and reviewed at your cost per review. The ≈25% default reflects a large real-world retinal AI screening deployment (<a href="https://academic.oup.com/jamia/article/31/1/130/7320055" target="_blank" rel="noopener">Lee&nbsp;et&nbsp;al., JAMIA 2024</a>).</li>
-          <li>Fixed costs = camera (one-time purchase, or monthly rental if rented) + software license accrued over the chosen horizon. Consumables, marketing and referral revenue are not included.</li>
+          <li>Staff cost per scan = loaded monthly salary (salary + employer on-costs) ÷ working minutes per month × minutes per test — only scanning time is charged to the test.</li>
+          <li>High-risk patients = the chosen share of screened patients the AI flags. This drives clinical impact and, if set, specialist-review cost and downstream value. The ≈25% default reflects a large real-world retinal AI screening deployment (<a href="https://academic.oup.com/jamia/article/31/1/130/7320055" target="_blank" rel="noopener">Lee&nbsp;et&nbsp;al., JAMIA 2024</a>).</li>
+          <li>Downstream value is counted as extra revenue per flagged high-risk patient and is included in profit, ROI and break-even (shown separately where it applies).</li>
+          <li>With mixed payers, the effective price per scan is the blended average of the reimbursed price and the self-pay price, weighted by the reimbursed share.</li>
+          <li>Fixed costs = camera (one-time purchase, or monthly rental if rented) + software license + any clinic overhead, accrued over the chosen horizon. Consumables and marketing are not included.</li>
           <li>If expected volume exceeds scanning capacity, projections are capped at capacity.</li>
           <li>All amounts are calculated in USD and shown converted at the rate you set: <span id="note-rates"></span>.</li>
         </ul>
+      </div>
+
+      <div class="card cta">
+        <div class="cta-body">
+          <h3>Ready to bring Mediwhale to your clinic?</h3>
+          <p>Talk to our team about device options, licensing and pricing tailored to your setup.</p>
+        </div>
+        <a class="cta-btn" href="https://mediwhale.com/contact-us/" target="_blank" rel="noopener">
+          Talk to Mediwhale
+          <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><path d="M3 7.5h8M7.5 4l3.5 3.5-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
 
       <p class="foot">This is a planning estimate, not a quote or financial advice. Figures depend on your actual device pricing, Mediwhale license terms, local reimbursement and staffing costs.</p>
@@ -721,13 +860,19 @@
     software: 2000,   // USD per year
     aifee: 25,        // USD per scan
     salary: 3000,     // USD per month
+    onCosts: 0,       // employer on-costs, % on top of salary
+    overhead: 0,      // USD/month clinic overhead allocated to the service
     hours: 8,         // clinic hours per day
     days: 5,          // working days per week
     tpt: 5,           // minutes per test
-    specOn: 1,        // include specialist review of high-risk patients
     hr: 25,           // expected high-risk rate, %
+    specOn: 1,        // review high-risk patients with a specialist
     spec: 50,         // USD specialist cost per high-risk review
-    price: 70,        // USD per scan
+    price: 70,        // USD per scan (self-pay when mixed payers)
+    mixedPayers: 0,   // 0/1 blend reimbursed + self-pay pricing
+    pctReimb: 50,     // % of scans reimbursed (when mixedPayers)
+    reimbPrice: 40,   // USD reimbursed price per scan (when mixedPayers)
+    downstream: 0,    // USD downstream value per high-risk patient captured
     volume: 150       // expected patients per month
   };
   var state = Object.assign({}, DEFAULTS);
@@ -780,6 +925,18 @@
                 label: function(v){ return v + "%"; } },
     spec:     { values: [25, 50, 75, 100], target: "spec", slider: "sl-spec",
                 label: function(v){ return moneyCompact(v); } },
+    onCosts:  { values: [0, 15, 25, 30], target: "onCosts", slider: "sl-onCosts",
+                label: function(v){ return v === 0 ? "None" : "+" + v + "%"; } },
+    overhead: { values: [0, 500, 1000, 2000], target: "overhead", slider: "sl-overhead",
+                label: function(v){ return v === 0 ? "None" : moneyCompact(v) + "/mo"; } },
+    mixedPayers:{ values: [0, 1], target: "mixedPayers",
+                label: function(v){ return v ? "Yes" : "No, single price"; } },
+    pctReimb: { values: [25, 50, 75, 100], target: "pctReimb", slider: "sl-pctReimb",
+                label: function(v){ return v + "%"; } },
+    reimbPrice:{ values: [20, 40, 60, 80], target: "reimbPrice", slider: "sl-reimbPrice",
+                label: function(v){ return moneyCompact(v); } },
+    downstream:{ values: [0, 100, 250, 500], target: "downstream", slider: "sl-downstream",
+                label: function(v){ return v === 0 ? "None" : moneyCompact(v); } },
     price:    { values: [50, 70, 100, 150], target: "price", slider: "sl-price",
                 label: function(v){ return moneyCompact(v); } }
   };
@@ -789,8 +946,13 @@
     "sl-rent":   { target: "rent"   },
     "sl-aifee":  { target: "aifee"  },
     "sl-salary": { target: "salary" },
+    "sl-onCosts":{ target: "onCosts" },
+    "sl-overhead":{ target: "overhead" },
     "sl-hr":     { target: "hr"     },
     "sl-spec":   { target: "spec"   },
+    "sl-pctReimb":{ target: "pctReimb" },
+    "sl-reimbPrice":{ target: "reimbPrice" },
+    "sl-downstream":{ target: "downstream" },
     "sl-price":  { target: "price"  },
     "sl-volume": { target: "volume" }
   };
@@ -842,6 +1004,7 @@
   nameInputEl.addEventListener("input", function(){
     state.clinicName = nameInputEl.value.trim();
     if (lastMetrics) renderPrintSummary(lastMetrics); // cheap update — no chart rebuild while typing
+    persist();
   });
 
   /* ---------------- editable exact-value number inputs ---------------- */
@@ -850,8 +1013,13 @@
     rent:  {slider:"sl-rent",  cur:true,unit:"/mo"},
     aifee: {slider:"sl-aifee", cur:true,unit:"/scan"},
     salary:{slider:"sl-salary",cur:true,unit:"/mo"},
+    onCosts:{slider:"sl-onCosts",cur:false,unit:"%"},
+    overhead:{slider:"sl-overhead",cur:true,unit:"/mo"},
     hr:    {slider:"sl-hr",    cur:false,unit:"%"},
     spec:  {slider:"sl-spec",  cur:true,unit:"/review"},
+    pctReimb:{slider:"sl-pctReimb",cur:false,unit:"%"},
+    reimbPrice:{slider:"sl-reimbPrice",cur:true,unit:"/scan"},
+    downstream:{slider:"sl-downstream",cur:true,unit:"/pt"},
     price: {slider:"sl-price", cur:true,unit:"/scan"},
     volume:{slider:"sl-volume",cur:false,unit:"/mo"}
   };
@@ -957,10 +1125,14 @@
       if (document.activeElement !== fxInput) fxInput.value = rates[state.cur];
       fxNote.textContent = "Edit the rate to match today's " + state.cur + "/USD.";
     }
-    // specialist sub-fields enabled state
+    // specialist cost sub-field gates on the specialist toggle
     var specFields = document.getElementById("spec-fields");
-    specFields.classList.toggle("disabled", !state.specOn);
+    specFields.classList.toggle("off", !state.specOn);
     specFields.inert = !state.specOn;
+    // payer-mix sub-fields gate on the mixed-payers toggle
+    var payerFields = document.getElementById("payer-fields");
+    payerFields.classList.toggle("off", !state.mixedPayers);
+    payerFields.inert = !state.mixedPayers;
     // buy vs rent field visibility
     var buying = state.acq === "buy";
     document.getElementById("field-camera-buy").style.display = buying ? "" : "none";
@@ -982,8 +1154,14 @@
     document.getElementById("max-aifee").textContent  = money(150, 0);
     document.getElementById("min-salary").textContent = moneyCompact(500);
     document.getElementById("max-salary").textContent = moneyCompact(12000);
+    document.getElementById("min-overhead").textContent = money(0, 0);
+    document.getElementById("max-overhead").textContent = moneyCompact(10000);
     document.getElementById("min-spec").textContent   = money(0, 0);
     document.getElementById("max-spec").textContent   = money(300, 0);
+    document.getElementById("min-reimbPrice").textContent = money(0, 0);
+    document.getElementById("max-reimbPrice").textContent = money(300, 0);
+    document.getElementById("min-downstream").textContent = money(0, 0);
+    document.getElementById("max-downstream").textContent = moneyCompact(2000);
     document.getElementById("min-price").textContent  = money(10, 0);
     document.getElementById("max-price").textContent  = money(300, 0);
   }
@@ -993,20 +1171,30 @@
     var s = state;
     var daysPerMonth   = s.days * WEEKS_PER_MONTH;
     var minutesPerDay  = s.hours * 60;
-    var staffPerMinute = s.salary / (daysPerMonth * minutesPerDay);
+    var salaryLoaded   = s.salary * (1 + s.onCosts / 100);
+    var staffPerMinute = salaryLoaded / (daysPerMonth * minutesPerDay);
     var staffPerTest   = staffPerMinute * s.tpt;
     var specPerTest    = s.specOn ? (s.hr / 100) * s.spec : 0;
     var varPerTest     = s.aifee + staffPerTest + specPerTest;
-    var margin         = s.price - varPerTest;
+
+    // effective (blended) price per scan when payers are mixed
+    var effPrice = s.mixedPayers
+      ? (s.pctReimb / 100) * s.reimbPrice + (1 - s.pctReimb / 100) * s.price
+      : s.price;
+
+    var downstreamPerScan = (s.hr / 100) * s.downstream;   // expected downstream value per scan
+    var marginScan  = effPrice - varPerTest;                // scan-fee margin
+    var marginTotal = marginScan + downstreamPerScan;       // incl. downstream value
 
     var T            = s.horizon;
     var swMonthly    = s.software / 12;
     var upfront      = s.acq === "buy" ? s.camera : 0;
     var rentMonthly  = s.acq === "rent" ? s.rent : 0;
-    var fixedMonthly = swMonthly + rentMonthly;
+    var overheadMonthly = s.overhead;
+    var fixedMonthly = swMonthly + rentMonthly + overheadMonthly;
     var fixedTotal   = upfront + fixedMonthly * T;
 
-    var beTotal    = margin > 0 ? fixedTotal / margin : Infinity;
+    var beTotal    = marginTotal > 0 ? fixedTotal / marginTotal : Infinity;
     var bePerMonth = beTotal / T;
     var capPerDay   = Math.floor(minutesPerDay / s.tpt);
     var capPerMonth = capPerDay * daysPerMonth;
@@ -1015,12 +1203,15 @@
     var volumeCapped = s.volume > capPerMonth;
     var V = Math.min(s.volume, Math.floor(capPerMonth));
 
-    var referrals        = s.specOn ? V * (s.hr / 100) : 0;
+    var highRiskPerMonth = V * (s.hr / 100);
+    var referrals        = s.specOn ? highRiskPerMonth : 0;
     var specMonthlyCost  = referrals * s.spec;
+    var downstreamMonthly = highRiskPerMonth * s.downstream;
 
-    var monthlyRevenue      = V * s.price;
+    var scanRevenue         = V * effPrice;
+    var monthlyRevenue      = scanRevenue + downstreamMonthly;   // total incl. downstream
     var monthlyVar          = V * varPerTest;
-    var monthlyContribution = V * margin;
+    var monthlyContribution = monthlyRevenue - monthlyVar;       // = V * marginTotal
     var monthlyOperating    = monthlyContribution - fixedMonthly;
     var paybackMonths       = monthlyOperating > 0 ? upfront / monthlyOperating : Infinity;
 
@@ -1030,14 +1221,18 @@
 
     return {
       daysPerMonth: daysPerMonth, minutesPerDay: minutesPerDay,
-      staffPerTest: staffPerTest, specPerTest: specPerTest,
-      varPerTest: varPerTest, margin: margin,
+      salaryLoaded: salaryLoaded, staffPerTest: staffPerTest, specPerTest: specPerTest,
+      varPerTest: varPerTest, effPrice: effPrice,
+      downstreamPerScan: downstreamPerScan, margin: marginScan, marginTotal: marginTotal,
       T: T, swMonthly: swMonthly, upfront: upfront,
-      rentMonthly: rentMonthly, fixedMonthly: fixedMonthly, fixedTotal: fixedTotal,
+      rentMonthly: rentMonthly, overheadMonthly: overheadMonthly,
+      fixedMonthly: fixedMonthly, fixedTotal: fixedTotal,
       beTotal: beTotal, bePerMonth: bePerMonth, bePerDay: bePerDay,
       capPerDay: capPerDay, capPerMonth: capPerMonth,
       volumeCapped: volumeCapped, V: V,
-      referrals: referrals, specMonthlyCost: specMonthlyCost,
+      highRiskPerMonth: highRiskPerMonth, referrals: referrals,
+      specMonthlyCost: specMonthlyCost, downstreamMonthly: downstreamMonthly,
+      scanRevenue: scanRevenue,
       monthlyRevenue: monthlyRevenue, monthlyVar: monthlyVar,
       monthlyContribution: monthlyContribution, monthlyOperating: monthlyOperating,
       paybackMonths: paybackMonths, costPerPatient: costPerPatient,
@@ -1082,10 +1277,11 @@
       div.innerHTML = warnIcon() + "<div>" + html + "</div>";
       host.appendChild(div);
     }
-    if (m.margin <= 0){
-      add("crit", "<strong>Each scan loses money at this price.</strong> You charge " + money(state.price) +
-        " but AI fee, staff time and specialist review cost " + money(m.varPerTest) +
-        " per scan. Raise the price or reduce per-scan costs — no volume can break even.");
+    if (m.marginTotal <= 0){
+      add("crit", "<strong>Each scan loses money.</strong> You collect " + money(m.effPrice) +
+        (m.downstreamPerScan > 0 ? " (+" + money(m.downstreamPerScan) + " downstream)" : "") +
+        " but per-scan costs are " + money(m.varPerTest) +
+        ". Raise the price or reduce per-scan costs — no volume can break even.");
     } else if (m.bePerMonth > m.capPerMonth){
       add("crit", "<strong>Break-even exceeds your capacity.</strong> You would need " + num(Math.ceil(m.bePerMonth)) +
         " scans/month but the clinic can run at most ~" + num(Math.round(m.capPerMonth)) +
@@ -1098,7 +1294,7 @@
         " scans/month but need " + num(Math.ceil(m.bePerMonth)) +
         " to cover the investment within " + m.T + " months." + extra);
     }
-    if (m.volumeCapped && m.margin > 0){
+    if (m.volumeCapped && m.marginTotal > 0){
       add("warn", "<strong>Expected volume exceeds what you can physically scan.</strong> You planned " + num(state.volume) +
         " scans/month, but " + state.hours + " h/day × " + num(m.daysPerMonth, 1) + " days at " + state.tpt +
         " min/scan tops out at ~" + num(Math.round(m.capPerMonth)) + ". Projections below use " + num(m.V) + ".");
@@ -1120,16 +1316,18 @@
     }
     if (m.fixedTotal === 0){
       numEl.textContent = "0";
-      sub.textContent = "Nothing to pay back — you already own the camera and pay no license. Every scan contributes " +
-        money(m.margin) + " of margin from day one.";
+      sub.textContent = "Nothing to pay back — you own the camera and carry no monthly fixed cost. Every scan contributes " +
+        money(m.marginTotal) + (m.downstreamPerScan > 0 ? " (incl. downstream value)" : "") + " from day one.";
       chip.className = "status-chip ok"; chip.textContent = "No upfront investment";
       mini.textContent = "";
       return;
     }
+    var costBits = [state.acq === "rent" ? "camera rental" : "camera", "software"];
+    if (m.overheadMonthly > 0) costBits.push("overhead");
     numEl.textContent = num(Math.ceil(m.bePerMonth));
     sub.textContent = "≈ " + num(m.bePerDay, 1) + " scans per working day to cover " +
-      money(m.fixedTotal, 0) + (state.acq === "rent" ? " (camera rental + software)" : " (camera + software)") +
-      " over " + m.T + " months.";
+      money(m.fixedTotal, 0) + " (" + costBits.join(" + ") + ") over " + m.T + " months" +
+      (m.downstreamPerScan > 0 ? ", counting downstream value" : "") + ".";
     var utilPct = m.capPerMonth > 0 ? (m.bePerMonth / m.capPerMonth) * 100 : 0;
     mini.textContent = "Uses " + num(utilPct, utilPct < 10 ? 1 : 0) + "% of your scanning capacity";
     if (m.bePerMonth > m.capPerMonth){
@@ -1158,12 +1356,13 @@
       : "to recoup the camera at " + num(m.V) + " scans/mo, license paid along the way";
     var roiTxt = isFinite(m.roi) ? (m.roi >= 0 ? "+" : "") + num(m.roi * 100, 0) + "%" : "—";
     var profitCls = m.netProfitHorizon > 0 ? "pos" : (m.netProfitHorizon < 0 ? "neg" : "");
+    var priceLabel = state.mixedPayers ? money(m.effPrice) + " blended price" : money(m.effPrice) + " price";
+    var marginSub = priceLabel + " − " + money(m.varPerTest) + " per-scan cost";
+    var costSub = "AI + staff" + (state.specOn ? " + specialist" : "") +
+      (m.overheadMonthly > 0 ? " + overhead" : "") + " + equipment share at " + num(m.V) + "/mo";
     var html =
-      tile("Cost per scan (all-in)", money(m.costPerPatient),
-           "AI fee + staff + specialist + equipment share at " + num(m.V) + "/mo") +
-      tile("Margin per scan", money(m.margin),
-           money(state.price) + " price − " + money(m.varPerTest) + " per-scan cost",
-           m.margin > 0 ? "" : "neg") +
+      tile("Cost per scan (all-in)", money(m.costPerPatient), costSub) +
+      tile("Margin per scan", money(m.margin), marginSub, m.margin > 0 ? "" : "neg") +
       tile("Payback period", payback, paybackSub) +
       tile("Net profit over " + m.T + " mo", money(m.netProfitHorizon, 0),
            "after all costs, at " + num(m.V) + " scans/month", profitCls) +
@@ -1171,9 +1370,18 @@
            isFinite(m.roi) ? "vs " + money(m.fixedTotal, 0) + " invested" : "no upfront investment", profitCls) +
       tile("Monthly capacity", num(Math.round(m.capPerMonth)) + " scans",
            state.hours + " h/day × " + num(m.daysPerMonth, 1) + " days ÷ " + state.tpt + " min/scan");
+    // clinical impact — always shown
+    var perYear = m.highRiskPerMonth * 12;
+    var oneIn = state.hr > 0 ? " · ~1 in " + num(Math.round(100 / state.hr)) + " patients" : "";
+    html += tile("High-risk identified", num(Math.round(perYear)) + " /yr",
+      state.hr + "% of " + num(Math.round(m.V * 12)) + " scans a year" + oneIn);
+    if (m.downstreamPerScan > 0){
+      html += tile("Downstream revenue", money(m.downstreamMonthly, 0) + " /mo",
+        money(state.downstream, 0) + " × " + num(Math.ceil(m.highRiskPerMonth)) + " high-risk patients/mo");
+    }
     if (state.specOn){
-      html += tile("High-risk referrals", num(Math.ceil(m.referrals)) + " /mo",
-        state.hr + "% of " + num(m.V) + " scans → " + money(m.specMonthlyCost, 0) + "/mo in specialist time");
+      html += tile("Specialist reviews", num(Math.ceil(m.referrals)) + " /mo",
+        money(m.specMonthlyCost, 0) + "/mo in specialist time at " + money(state.spec) + "/review");
     }
     document.getElementById("tiles").innerHTML = html;
   }
@@ -1335,13 +1543,13 @@
     var fixedShare = m.V * m.T > 0 ? m.fixedTotal / (m.V * m.T) : 0;
     var parts = [
       { name: "AI analysis fee", v: state.aifee, c: "var(--s1)" },
-      { name: "Staff time (" + state.tpt + " min)", v: m.staffPerTest, c: "var(--s2)" }
+      { name: "Staff time (" + state.tpt + " min" + (state.onCosts > 0 ? ", loaded" : "") + ")", v: m.staffPerTest, c: "var(--s2)" }
     ];
     if (state.specOn){
       parts.push({ name: "Specialist review (" + state.hr + "% flagged)", v: m.specPerTest, c: "var(--s5)" });
     }
-    parts.push({ name: state.acq === "rent" ? "Rental + license share" : "Camera + license share",
-      v: fixedShare, c: "var(--s3)" });
+    parts.push({ name: (state.acq === "rent" ? "Rental" : "Camera") + " + license" +
+      (state.overhead > 0 ? " + overhead" : "") + " share", v: fixedShare, c: "var(--s3)" });
     var total = parts.reduce(function(a, p){ return a + p.v; }, 0);
     var totEl = document.getElementById("stack-total");
     totEl.textContent = money(total);
@@ -1378,11 +1586,16 @@
     var host = document.getElementById("price-bars");
     host.textContent = "";
     document.getElementById("bars-sub").textContent =
-      "Patients per month needed to break even in " + m.T + " months. Click a bar to use that price.";
+      "Patients per month needed to break even in " + m.T + " months" +
+      (state.mixedPayers ? " (varying the self-pay price)" : "") +
+      (m.downstreamPerScan > 0 ? ", counting downstream value" : "") + ". Click a bar to use that price.";
 
     var prices = [50, 70, 100, 150];
     var vals = prices.map(function(p){
-      var mg = p - m.varPerTest;
+      var effP = state.mixedPayers
+        ? (state.pctReimb / 100) * state.reimbPrice + (1 - state.pctReimb / 100) * p
+        : p;
+      var mg = (effP - m.varPerTest) + m.downstreamPerScan;
       return mg > 0 ? m.fixedTotal / (mg * m.T) : Infinity;
     });
     var finite = vals.filter(isFinite);
@@ -1508,13 +1721,18 @@
         : (state.camera === 0 ? "Already owned" : money(state.camera, 0))],
       ["Software / yr", state.software === 0 ? "None" : money(state.software, 0)],
       ["AI fee / scan", money(state.aifee)],
-      ["Staff salary / mo", money(state.salary, 0)],
+      ["Staff salary / mo", money(state.salary, 0) + (state.onCosts > 0 ? " · +" + state.onCosts + "%" : "")],
       ["Clinic time", state.hours + " h × " + state.days + " days/wk"],
       ["Time per test", state.tpt + " min"],
-      ["Specialist review", state.specOn ? state.hr + "% flagged · " + money(state.spec) + "/review" : "Off"],
-      ["Price / scan", money(state.price)],
+      ["High-risk rate", state.hr + "% flagged"],
+      ["Specialist review", state.specOn ? money(state.spec) + "/review" : "Off"],
+      ["Price / scan", state.mixedPayers
+        ? money(m.effPrice) + " blended (" + state.pctReimb + "% @ " + money(state.reimbPrice) + ")"
+        : money(state.price)],
       ["Expected volume", num(state.volume) + " /mo" + (m.volumeCapped ? " (capped at " + num(m.V) + ")" : "")]
     ];
+    if (state.overhead > 0) items.push(["Clinic overhead", money(state.overhead, 0) + "/mo"]);
+    if (state.downstream > 0) items.push(["Downstream value", money(state.downstream, 0) + " /high-risk"]);
     items.forEach(function(kv){
       var d = document.createElement("div"); d.className = "ps-item";
       var k = document.createElement("div"); k.className = "ps-k"; k.textContent = kv[0];
@@ -1543,6 +1761,140 @@
     }
   });
 
+  /* ---------------- save / share (URL + localStorage) ---------------- */
+  var STORAGE_KEY = "mediwhale-roi-v1";
+  function b64encode(str){
+    return btoa(unescape(encodeURIComponent(str))).replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
+  }
+  function b64decode(str){
+    var b = str.replace(/-/g, "+").replace(/_/g, "/");
+    while (b.length % 4) b += "=";
+    return decodeURIComponent(escape(atob(b)));
+  }
+  function encodeState(){
+    var s = {}, r = {};
+    Object.keys(DEFAULTS).forEach(function(k){ if (state[k] !== DEFAULTS[k]) s[k] = state[k]; });
+    Object.keys(RATE_DEFAULTS).forEach(function(k){ if (rates[k] !== RATE_DEFAULTS[k]) r[k] = rates[k]; });
+    if (!Object.keys(s).length && !Object.keys(r).length) return "";
+    return b64encode(JSON.stringify({ s: s, r: r }));
+  }
+  function applyEncoded(code){
+    try{
+      var p = JSON.parse(b64decode(code));
+      if (p && p.s) Object.keys(p.s).forEach(function(k){ if (k in DEFAULTS) state[k] = p.s[k]; });
+      if (p && p.r) Object.keys(p.r).forEach(function(k){ if (k in RATE_DEFAULTS) rates[k] = p.r[k]; });
+      return true;
+    }catch(e){ return false; }
+  }
+  function loadState(){
+    var m = (location.hash || "").match(/[#&]s=([^&]+)/);
+    if (m){ applyEncoded(m[1]); return; }
+    try{ var saved = localStorage.getItem(STORAGE_KEY); if (saved) applyEncoded(saved); }catch(e){}
+  }
+  function persist(){
+    var code = encodeState();
+    try{
+      var base = location.pathname + location.search;
+      history.replaceState(null, "", code ? (base + "#s=" + code) : base);
+    }catch(e){}
+    try{ localStorage.setItem(STORAGE_KEY, code); }catch(e){}
+  }
+
+  var copyBtn = document.getElementById("copy-btn");
+  var copyLabel = document.getElementById("copy-btn-label");
+  var copyTimer;
+  copyBtn.addEventListener("click", function(){
+    var code = encodeState();
+    var url = location.origin + location.pathname + (code ? "#s=" + code : "");
+    function done(ok){
+      copyBtn.classList.toggle("copied", ok);
+      copyLabel.textContent = ok ? "Link copied!" : "Press Ctrl+C";
+      clearTimeout(copyTimer);
+      copyTimer = setTimeout(function(){ copyBtn.classList.remove("copied"); copyLabel.textContent = "Copy link"; }, 1900);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(function(){ done(true); }, function(){ done(false); });
+    } else {
+      try{
+        var ta = document.createElement("textarea"); ta.value = url;
+        ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta);
+        ta.select(); document.execCommand("copy"); document.body.removeChild(ta); done(true);
+      }catch(e){ done(false); }
+    }
+  });
+
+  /* ---------------- pin & compare scenarios ---------------- */
+  var PIN_KEY = "mediwhale-roi-pin-v1";
+  var pinned = null;
+  try{ var pj = localStorage.getItem(PIN_KEY); if (pj) pinned = JSON.parse(pj); }catch(e){}
+  var pinBtn = document.getElementById("pin-btn");
+  var pinLabel = document.getElementById("pin-btn-label");
+
+  function scenarioDigest(){
+    var acq = state.acq === "rent" ? "Rent " + money(state.rent, 0) + "/mo"
+      : (state.camera === 0 ? "Own camera" : "Buy " + money(state.camera, 0));
+    return acq + " · " + num(state.volume) + " scans/mo · " + money(state.price) + "/scan · " + state.horizon + " mo";
+  }
+  function snapshot(m){
+    return {
+      label: state.clinicName || "Pinned scenario", digest: scenarioDigest(),
+      be: isFinite(m.bePerMonth) ? Math.ceil(m.bePerMonth) : null,
+      net: m.netProfitHorizon, roi: isFinite(m.roi) ? m.roi : null,
+      payback: isFinite(m.paybackMonths) ? m.paybackMonths : null, T: m.T
+    };
+  }
+  pinBtn.addEventListener("click", function(){
+    pinned = snapshot(lastMetrics);
+    try{ localStorage.setItem(PIN_KEY, JSON.stringify(pinned)); }catch(e){}
+    renderCompare(lastMetrics);
+  });
+  document.getElementById("compare-clear").addEventListener("click", function(){
+    pinned = null;
+    try{ localStorage.removeItem(PIN_KEY); }catch(e){}
+    renderCompare(lastMetrics);
+  });
+  function fmtMetric(kind, v){
+    if (v === null || v === undefined || !isFinite(v)) return "—";
+    if (kind === "be") return num(v) + " /mo";
+    if (kind === "net") return money(v, 0);
+    if (kind === "roi") return (v >= 0 ? "+" : "") + num(v * 100, 0) + "%";
+    if (kind === "payback") return num(v, v < 10 ? 1 : 0) + " mo";
+    return String(v);
+  }
+  function renderCompare(m){
+    var card = document.getElementById("compare-card");
+    pinLabel.textContent = pinned ? "Update pin" : "Pin to compare";
+    if (!pinned){ card.style.display = "none"; return; }
+    card.style.display = "";
+    document.getElementById("compare-digest-a").textContent = "Pinned — " + pinned.label + ": " + pinned.digest;
+    var cur = snapshot(m);
+    var rows = [
+      { k: "be", label: "Break-even / mo", better: "lower" },
+      { k: "net", label: "Net profit (" + m.T + " mo)", better: "higher" },
+      { k: "roi", label: "ROI", better: "higher" },
+      { k: "payback", label: "Payback", better: "lower" }
+    ];
+    var grid = document.getElementById("compare-grid");
+    grid.textContent = "";
+    function cell(txt, cls){ var d = document.createElement("div"); if (cls) d.className = cls; d.textContent = txt; grid.appendChild(d); }
+    cell("Metric", "ch rl"); cell("Pinned", "ch"); cell("Current", "ch");
+    rows.forEach(function(r){
+      cell(r.label, "rl");
+      cell(fmtMetric(r.k, pinned[r.k]), "");
+      var curDiv = document.createElement("div"); curDiv.className = "cur-col";
+      curDiv.textContent = fmtMetric(r.k, cur[r.k]);
+      var a = pinned[r.k], b = cur[r.k];
+      if (a != null && b != null && isFinite(a) && isFinite(b) && a !== b){
+        var up = b > a, good = (r.better === "higher") ? up : !up;
+        var span = document.createElement("span");
+        span.className = "delta " + (good ? "pos" : "neg");
+        span.textContent = " " + (up ? "▲" : "▼");
+        curDiv.appendChild(span);
+      }
+      grid.appendChild(curDiv);
+    });
+  }
+
   /* ---------------- main render ---------------- */
   function render(refocusPrice){
     syncControls();
@@ -1557,6 +1909,8 @@
     renderTable(m);
     renderNotes(m);
     renderPrintSummary(m);
+    renderCompare(m);
+    persist();
   }
 
   document.getElementById("resetBtn").addEventListener("click", function(){
@@ -1571,6 +1925,7 @@
     resizeTimer = setTimeout(function(){ render(); }, 160);
   });
 
+  loadState();
   buildChips();
   buildSliders();
   buildNumberInputs();
