@@ -195,11 +195,20 @@
   /* ---- footer ---- */
   .foot{
     margin-top:22px;padding:16px 34px 22px;border-top:1px solid var(--hairline);
-    display:flex;gap:14px;align-items:baseline;justify-content:space-between;flex-wrap:wrap;
+    display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;
     font-size:11.5px;color:var(--muted);
   }
   .foot a{color:var(--brand);text-decoration:none}
-  .foot .ref{max-width:60ch;line-height:1.5}
+  .foot .ref{max-width:56ch;line-height:1.5}
+  .foot .open-chip{
+    display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
+    font-size:13px;font-weight:700;color:#fff;
+    background:linear-gradient(135deg,#4457a7 0%,#2f3877 100%);
+    border-radius:999px;padding:9px 18px;text-decoration:none;
+    box-shadow:0 6px 16px -8px rgba(68,87,167,.7);
+  }
+  .foot .open-chip:hover{filter:brightness(1.08);color:#fff}
+  .foot .open-chip:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 
   @media print{
     :root,:root[data-theme]{--bg:#fff;--sheet:#fff;--shadow:none}
@@ -364,6 +373,6 @@
 
   <div class="foot">
     <div class="ref">A planning estimate, not a quote or financial advice — figures depend on your device pricing, licence terms, reimbursement and staffing.</div>
-    <div><a href="./" style="font-weight:700">Open the calculator →</a></div>
+    <div><a class="open-chip" href="./">Open the calculator&nbsp;→</a></div>
   </div>
 </div>
