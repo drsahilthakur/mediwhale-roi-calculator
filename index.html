@@ -602,7 +602,7 @@
         <div class="field" id="field-camera-buy">
           <div class="field-top"><label id="lbl-camera" for="sl-camera">Camera cost (one-time)</label><output id="out-camera"></output></div>
           <div class="chips" id="chips-camera" role="group" aria-labelledby="lbl-camera"></div>
-          <input type="range" id="sl-camera" min="0" max="30000" step="500" aria-labelledby="lbl-camera">
+          <input type="range" id="sl-camera" min="0" max="50000" step="500" aria-labelledby="lbl-camera">
           <div class="range-ends"><span id="min-camera"></span><span id="max-camera"></span></div>
         </div>
         <div class="field" id="field-camera-rent">
@@ -1147,7 +1147,7 @@
     document.getElementById("out-software").textContent = state.software === 0 ? "None" : money(state.software, 0) + " / yr";
     updateNumberInputs();
     document.getElementById("min-camera").textContent = money(0, 0);
-    document.getElementById("max-camera").textContent = moneyCompact(30000);
+    document.getElementById("max-camera").textContent = moneyCompact(50000);
     document.getElementById("min-rent").textContent   = moneyCompact(100);
     document.getElementById("max-rent").textContent   = moneyCompact(2000);
     document.getElementById("min-aifee").textContent  = money(0, 0);
