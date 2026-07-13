@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <title>How to use the Mediwhale ROI Calculator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -155,7 +158,8 @@
   @media (max-width:640px){.results{grid-template-columns:1fr}}
   .hero{
     border-radius:13px;padding:18px 18px 16px;color:#fff;
-    background:linear-gradient(150deg,var(--brand) 0%,var(--brand-strong) 100%);
+    background-color:#363f7e; /* solid fallback: keeps white text legible + tool-evaluable in both themes */
+    background-image:linear-gradient(150deg,#4457a7 0%,#36418a 100%);
     display:flex;flex-direction:column;justify-content:center;
   }
   .hero .hl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
@@ -208,7 +212,8 @@
   .foot .open-chip{
     display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
     font-size:13px;font-weight:700;color:#fff;
-    background:linear-gradient(135deg,#4457a7 0%,#2f3877 100%);
+    background-color:#363f7e; /* solid fallback for contrast tools */
+    background-image:linear-gradient(135deg,#4457a7 0%,#2f3877 100%);
     border-radius:999px;padding:9px 18px;text-decoration:none;
     box-shadow:0 6px 16px -8px rgba(68,87,167,.7);
   }
@@ -226,7 +231,8 @@
   }
   @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
 </style>
-
+</head>
+<body>
 <div class="sheet">
   <header class="head">
     <div class="head-top">
@@ -382,3 +388,5 @@
   </div>
 </div>
 <script>if("serviceWorker" in navigator&&location.protocol==="https:"&&(/netlify\.app$/.test(location.hostname)||/mediwhale/.test(location.hostname))){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){});});}</script>
+</body>
+</html>
