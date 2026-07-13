@@ -5,10 +5,21 @@
   publish = "."
   command = ""
 
-# Long-cache the calculator but always revalidate the HTML so updates ship instantly.
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Serve the web app manifest with the correct MIME type so browsers recognise it.
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+
+# Never let the service worker be served stale, so updates activate promptly.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
