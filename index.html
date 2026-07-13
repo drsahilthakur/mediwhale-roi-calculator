@@ -1935,4 +1935,4 @@
   render();
 })();
 </script>
-<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){});});}</script>
+<script>if("serviceWorker" in navigator&&location.protocol==="https:"&&(/netlify\.app$/.test(location.hostname)||/mediwhale/.test(location.hostname))){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){});});}</script>
